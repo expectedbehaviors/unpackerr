@@ -1,0 +1,96 @@
+# Baseline Unpackerr. Override ingress, persistence (existingClaim), onepassworditem.items in your values.
+# Secret "unpackerr" (envFrom) — provide via onepassworditem or ExternalSecrets. Keys = env names (UN_LIDARR_0_API_KEY, etc.).
+
+unpackerr:
+  global:
+    fullnameOverride: unpackerr
+
+  defaultPodOptions:
+    securityContext:
+      fsGroup: 1000
+      fsGroupChangePolicy: Always
+    annotations:
+      secret.reloader.stakater.com/reload: "unpackerr"
+
+  controllers:
+    main:
+      enabled: true
+      type: deployment
+      replicas: 1
+      strategy: Recreate
+      annotations:
+        argocd.argoproj.io/sync-wave: "1"
+      defaultContainerOptions:
+        image:
+          repository: golift/unpackerr
+          tag: unstable
+          pullPolicy: Always
+      containers:
+        main:
+          envFrom:
+            - secretRef:
+                name: unpackerr
+                optional: true
+          env:
+            TZ: UTC
+            UN_INTERVAL: "2m"
+            UN_START_DELAY: "1m"
+            UN_LIDARR_0_URL: "http://lidarr.lidarr.svc.cluster.local:8686"
+            UN_LIDARR_0_PATHS_0: "/downloads"
+            UN_LIDARR_0_SPLIT_FLAC: "true"
+            UN_WEBSERVER_METRICS: "true"
+          probes:
+            startup:
+              enabled: true
+              custom: true
+              spec:
+                failureThreshold: 30
+                periodSeconds: 5
+                successThreshold: 1
+                tcpSocket:
+                  port: 5656
+                timeoutSeconds: 1
+                initialDelaySeconds: 5
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: "1"
+              memory: 256Mi
+
+  service:
+    main:
+      enabled: true
+      ports:
+        http:
+          enabled: true
+          port: 5656
+          protocol: HTTP
+
+  ingress:
+    main:
+      enabled: false
+      annotations: {}
+      hosts: []
+
+  persistence:
+    config:
+      enabled: true
+      type: persistentVolumeClaim
+      accessMode: ReadWriteOnce
+      size: 1Gi
+      storageClass: ""
+      globalMounts:
+        - path: /config
+    downloads:
+      enabled: true
+      type: emptyDir
+      globalMounts:
+        - path: /downloads
+
+# Optional: sync 1Password item to Kubernetes secret "unpackerr" (envFrom). Item field names = secret keys (UN_LIDARR_0_API_KEY, UN_RADARR_0_API_KEY, etc.).
+onepassworditem:
+  enabled: false
+  defaultVault: Kubernetes
+  items: []
