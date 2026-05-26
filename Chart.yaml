@@ -2,7 +2,7 @@ apiVersion: v2
 name: unpackerr
 description: Unpackerr daemon for *arr stack — extracts completed downloads and (for Lidarr) splits FLAC+CUE. bjw-s app-template; optional 1Password secret injection.
 version: 1.0.0
-appVersion: "0.14.0"
+appVersion: "1.0.0"
 kubeVersion: ">=1.22.0-0"
 keywords:
   - unpackerr
