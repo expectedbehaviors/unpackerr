@@ -1,0 +1,35 @@
+apiVersion: v1
+entries:
+  unpackerr:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2026-05-26T03:03:46.151117891Z"
+    dependencies:
+    - alias: unpackerr
+      name: app-template
+      repository: https://bjw-s-labs.github.io/helm-charts
+      version: 4.6.2
+    - name: onepassworditem
+      repository: https://expectedbehaviors.github.io/OnePasswordItem-helm
+      version: 1.1.1
+    description: Unpackerr daemon for *arr stack — extracts completed downloads and
+      (for Lidarr) splits FLAC+CUE. bjw-s app-template; optional 1Password secret
+      injection.
+    digest: c50dd1424f120f3cac02da2c54d10320bbb61899a5c3cc1abd0f79bb9af0e27f
+    home: https://unpackerr.zip
+    keywords:
+    - unpackerr
+    - lidarr
+    - radarr
+    - sonarr
+    - readarr
+    - extraction
+    - cue-splitting
+    kubeVersion: '>=1.22.0-0'
+    name: unpackerr
+    sources:
+    - https://github.com/Unpackerr/unpackerr
+    urls:
+    - https://expectedbehaviors.github.io/unpackerr/unpackerr-1.0.0.tgz
+    version: 1.0.0
+generated: "2026-05-26T03:03:46.144017672Z"
