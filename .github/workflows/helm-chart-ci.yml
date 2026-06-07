@@ -46,7 +46,7 @@ jobs:
         bjw-s=https://bjw-s-labs.github.io/helm-charts
         onepassworditem=https://expectedbehaviors.github.io/OnePasswordItem-helm
       publish_enabled: true
-      release_notes_enabled: false
+      release_notes_enabled: true
       chart_name: unpackerr
       helm_repo_name: bjw-s
       helm_repo_url: https://bjw-s-labs.github.io/helm-charts
